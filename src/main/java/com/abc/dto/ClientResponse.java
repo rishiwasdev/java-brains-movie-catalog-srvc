@@ -9,6 +9,11 @@ public class ClientResponse {
 
 	public ClientResponse() {}
 
+	public ClientResponse(Object data) {
+		super();
+		this.data = data;
+	}
+
 	public Object getData() {
 		return data;
 	}

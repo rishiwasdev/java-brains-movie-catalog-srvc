@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -20,6 +21,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class ObjectMapperConfig {
 	private static final Logger log = LoggerFactory.getLogger(ObjectMapperConfig.class);
 	public static ObjectMapper objMapper = new ObjectMapper();
+
+	{
+		objMapper.setVisibility(objMapper.getSerializationConfig().getDefaultVisibilityChecker().withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+				.withSetterVisibility(JsonAutoDetect.Visibility.NONE).withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+	}
 
 	public <T> String toJson(T source) {
 		String jsonTarget = null;
@@ -42,8 +48,7 @@ public class ObjectMapperConfig {
 	}
 
 	public <K, V> Map<K, V> createMap(String jsonSource) {
-		TypeReference<Map<K, V>> typeRef = new TypeReference<Map<K, V>>() {
-		};
+		TypeReference<Map<K, V>> typeRef = new TypeReference<Map<K, V>>() {};
 		Map<K, V> targetMap = null;
 		try {
 			targetMap = objMapper.readValue(jsonSource, typeRef);

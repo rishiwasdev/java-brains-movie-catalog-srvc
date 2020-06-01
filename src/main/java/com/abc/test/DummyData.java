@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.abc.config.Constants;
+import com.abc.dto.CatalogItemDto;
+import com.abc.dto.MovieDto;
 import com.abc.dto.RatingDto;
 import com.abc.util.ReadFile;
 import com.abc.util.Util;
@@ -82,10 +84,24 @@ public class DummyData {
 	public static Set<String> dummyMovieIds(int count) {
 		List<String> movieProps = ReadFile.getLinesAsList("Movies.properties");
 		count = Math.min(count, movieProps.size());
+		count = Util_Elementary.randomNum(count);
 		log.info("Creating {} dummy Movie-IDs.", count);
 		Set<String> movieIds = new HashSet<>();
 		while (movieIds.size() < count)
 			movieIds.add(movieProps.get(Util_Elementary.randomNum(movieProps.size() - 1)));
 		return movieIds;
+	}
+
+	public static CatalogItemDto createCatalog(String userId, MovieDto movie, RatingDto rating) {
+		CatalogItemDto catalog = new CatalogItemDto();
+		catalog.setUserId(userId);
+		catalog.setName(movie != null ? movie.getName() : null);
+		catalog.setDescription(movie != null ? movie.getDescription() : null);
+		catalog.setRating(rating != null ? rating.getRating() : null);
+		return catalog;
+	}
+
+	public static String dummyUserId() {
+		return Util_Elementary.randomNum(998) + 1001 + "";
 	}
 }

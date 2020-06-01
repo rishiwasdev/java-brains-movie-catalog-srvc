@@ -1,10 +1,17 @@
 package com.abc.util;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
 public class Util {
+	private static final String PATTERN_DEFAULT = "dd-MM-yyyy'T'HH:mm:ss";
+	private static final String PATTERN_INDIA = "dd-MM-yyyy HH:mm:ss";
+
 	public static boolean nullOrEmpty(String data) {
 		return data == null || data.isEmpty();
 	}
@@ -116,11 +123,76 @@ public class Util {
 		return str;
 	}
 
+	public static String randomStrUpperCase(int len) {
+		return randomStrLowerCase(len).toUpperCase();
+	}
+
 	public static String randomName(int numWords) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < numWords; i++) {
 			sb.append(asciiValue(65 + Util_Elementary.randomNum(25))).append(randomStrLowerCase(1 + Util_Elementary.randomNum(6))).append(" ");
 		}
 		return sb.toString().trim();
+	}
+
+	// -------- DateTime Utilities
+	public static LocalDateTime now() { // Java String for Zone-IDs
+		return LocalDateTime.now();
+	}
+
+	public static String nowFormatted() {
+		return now().format(formatter());
+	}
+
+	public static String nowFormatted(String pattern) {
+		return now().format(formatter(pattern));
+	}
+
+	public static LocalDateTime nowGmt() { // Java String for Zone-IDs
+		return LocalDateTime.now(Clock.systemUTC());
+	}
+
+	public static String nowGmtFormatted() {
+		return nowGmt().format(formatter());
+	}
+
+	public static String nowGmtFormatted(String pattern) {
+		return nowGmt().format(formatter(pattern));
+	}
+
+	public static LocalDateTime nowZoned(String zoneIdStr) { // Java String for Zone-IDs
+		if (Util.nullOrEmpty(zoneIdStr)) {
+			System.out.println("### ERROR(IllegalArgument): NULL OR EMPTY ZoneIdString received, returning system time.");
+			return now();
+		}
+		return LocalDateTime.now(Clock.system(ZoneId.of(zoneIdStr)));
+	}
+
+	public static String nowZonedFormatted(String zoneIdStr) { // Java String for Zone-IDs
+		return nowZoned(zoneIdStr).format(formatter());
+	}
+
+	public static String nowZonedFormatted(String zoneIdStr, String pattern) { // Java String for Zone-IDs
+		return nowZoned(zoneIdStr).format(formatter(pattern));
+	}
+
+	public static DateTimeFormatter formatter() {
+		return formatter(PATTERN_INDIA);
+	}
+
+	public static DateTimeFormatter formatter(String pattern) {
+		if (Util.nullOrEmpty(pattern)) {
+			System.out.println("### ERROR(IllegalArgument): NULL OR EMPTY pattern received, using Indian date-time pattern.");
+			return formatter();
+		}
+		return DateTimeFormatter.ofPattern(pattern);
+	}
+
+	public static String formatDateTime(LocalDateTime dateTime) {
+		return dateTime.format(formatter());
+	}
+
+	public static String formatDateTime(LocalDateTime dateTime, String pattern) {
+		return dateTime.format(formatter(pattern));
 	}
 }
