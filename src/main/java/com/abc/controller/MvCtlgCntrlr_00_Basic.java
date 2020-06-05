@@ -23,8 +23,8 @@ import com.abc.service.CatalogService;
 
 @RestController
 @RequestMapping("/movie-catalog")
-public class MvCtlgCntrlrUsingRestTemplate_00_BasicIdeas {
-	private static final Logger log = LoggerFactory.getLogger(MvCtlgCntrlrUsingRestTemplate_00_BasicIdeas.class);
+public class MvCtlgCntrlr_00_Basic {
+	private static final Logger log = LoggerFactory.getLogger(MvCtlgCntrlr_00_Basic.class);
 	@Autowired
 	private CatalogService catalogService;
 

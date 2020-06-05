@@ -25,8 +25,8 @@ import com.abc.test.DummyData;
 
 @RestController
 //@RequestMapping("/movie-catalog")
-public class MvCtlgCntrlrUsingWebClient_00_Learn {
-	private static final Logger log = LoggerFactory.getLogger(MvCtlgCntrlrUsingWebClient_00_Learn.class);
+public class MvCtlgCntrlr_Zzz_UsingWebClient {
+	private static final Logger log = LoggerFactory.getLogger(MvCtlgCntrlr_Zzz_UsingWebClient.class);
 	@Autowired
 	private ObjectMapperConfig mapper;
 	@Autowired
@@ -46,7 +46,7 @@ public class MvCtlgCntrlrUsingWebClient_00_Learn {
 			// ResponseEntity<ClientResponse> movieEntity = restTemplate.getForEntity(moviesBaseUrl + id, ClientResponse.class);
 			// ClientResponse movieResp = movieEntity.getBody();
 			// MovieDto movie = mapper.convert(movieResp.getData(), MovieDto.class);
-			/********** USING WebClient, above RestTemplate 3 lines would be replaced by WebClient code below */
+			/********** USING Asynchronous Reactive WebClient, above RestTemplate 3 lines would be replaced by below code */
 			// --------------------------- Get Movie from Movie-Info-Microservice
 			ClientResponse res = webClientbBuilder.build().get().uri(movieAsRespEntityUri + id).retrieve().bodyToMono(ClientResponse.class).block();
 			MovieDto movie = mapper.createObject(mapper.toJson(res.getData()), MovieDto.class);
